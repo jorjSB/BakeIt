@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">BakeIt</string>
+    <string name="no_internet">No internet connection available</string>
+    <string name="no_fav_movies">No content available</string>
+    <string name="details_poster_caption">Image</string>
+    <string name="initial_recipe_name">Not available</string>
+</resources>
