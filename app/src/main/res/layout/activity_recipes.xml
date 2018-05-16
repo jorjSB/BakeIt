@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:horizontalSpacing="0dp"
-        android:numColumns="auto_fit"
+        android:numColumns="1"
         android:stretchMode="columnWidth"
         android:verticalSpacing="0dp"
         android:id="@+id/recipes_grid">

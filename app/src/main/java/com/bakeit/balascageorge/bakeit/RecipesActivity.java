@@ -28,6 +28,9 @@ public class RecipesActivity extends AppCompatActivity {
     private RecipesArrayAdapter adapter;
     private ArrayList<Recipe> recipesArray;
     private String TAG = RecipesActivity.class.getSimpleName();
+    private int lastListPosition = -1;
+    private String LIST_POSITION_STATE_KEY = "last_position";
+    private String RECIPES_ARRAY_STATE_KEY = "recipes_array";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,12 @@ public class RecipesActivity extends AppCompatActivity {
 
         // attach the adapter to the GridView
         gridView.setAdapter(adapter);
+
+        // if Tablet change the grid column numbers.
+        boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+        if (tabletSize) {
+            gridView.setNumColumns(4);
+        }
 
         loadRecipesData();
     }
@@ -83,6 +92,28 @@ public class RecipesActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if(gridView != null)
+            lastListPosition = gridView.getFirstVisiblePosition();
+
+        // Save the state of item position
+        outState.putInt(LIST_POSITION_STATE_KEY, lastListPosition);
+        outState.putParcelableArrayList(RECIPES_ARRAY_STATE_KEY, recipesArray);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(final Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // Read the state of item position
+        lastListPosition = savedInstanceState.getInt(LIST_POSITION_STATE_KEY);
+        recipesArray = savedInstanceState.getParcelableArrayList(RECIPES_ARRAY_STATE_KEY);
+
+    }
+
     /**
      * Create adapter and inflate the grid view
      */
@@ -93,9 +124,9 @@ public class RecipesActivity extends AppCompatActivity {
         // notify adapter, update data
         adapter.updateAdapter(recipesArray);
 
-        // scroll to position
-//        if(lastListPosition != -1)
-//            gridView.setSelection(lastListPosition);
+//         scroll to position
+        if(lastListPosition != -1)
+            gridView.setSelection(lastListPosition);
 
     }
 }

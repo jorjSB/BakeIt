@@ -1,6 +1,7 @@
 package com.bakeit.balascageorge.bakeit.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bakeit.balascageorge.bakeit.R;
+import com.bakeit.balascageorge.bakeit.RecipeDetailsActivity;
 import com.bakeit.balascageorge.bakeit.models.Recipe;
 import com.squareup.picasso.Picasso;
 
@@ -76,7 +78,10 @@ public class RecipesArrayAdapter extends ArrayAdapter<Recipe> {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "TODO", Toast.LENGTH_SHORT).show();
+                Class destinationClass = RecipeDetailsActivity.class;
+                Intent intentToStartDetailActivity = new Intent(mContext, destinationClass);
+                intentToStartDetailActivity.putExtra("recipe", mRecipe);
+                mContext.startActivity(intentToStartDetailActivity);
             }
         });
 

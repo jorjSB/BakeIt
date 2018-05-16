@@ -4,4 +4,8 @@
     <string name="no_fav_movies">No content available</string>
     <string name="details_poster_caption">Image</string>
     <string name="initial_recipe_name">Not available</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment_step">Step fragment</string>
+    <string name="hello_blank_fragment_ingredient">Ingredient fragment</string>
 </resources>

@@ -87,8 +87,8 @@ public class Recipe implements Parcelable{
         this.setName(in.readString());
         this.setServings(in.readInt());
         this.setImageUrl(in.readString());
-        this.setIngredients(in.readArrayList(null));
-        this.setSteps(in.readArrayList(null));
+        this.setIngredients(in.readArrayList(Ingredient.class.getClassLoader()));
+        this.setSteps(in.readArrayList(Step.class.getClassLoader()));
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
