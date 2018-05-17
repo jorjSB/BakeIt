@@ -4,27 +4,24 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bakeit.balascageorge.bakeit.R;
-import com.bakeit.balascageorge.bakeit.RecipeIngredientsFragment.OnListFragmentInteractionListener;
-import com.bakeit.balascageorge.bakeit.dummy.DummyContent.DummyItem;
+import com.bakeit.balascageorge.bakeit.models.Ingredient;
 
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MyIngredientRecyclerViewAdapter extends RecyclerView.Adapter<MyIngredientRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private final ArrayList<Ingredient> mIngredients;
 
-    public MyIngredientRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
-        mValues = items;
-        mListener = listener;
+    public MyIngredientRecyclerViewAdapter(ArrayList<Ingredient> ingredients) {
+        mIngredients = ingredients;
     }
 
     @Override
@@ -36,43 +33,28 @@ public class MyIngredientRecyclerViewAdapter extends RecyclerView.Adapter<MyIngr
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
-
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
-                }
-            }
-        });
+        holder.mIdView.setText( mIngredients.get(position).getIngredient());
+        holder.mContentView.setText(mIngredients.get(position).getQuantity().toString()
+                + " ("
+                + mIngredients.get(position).getMeasure()
+                + ")");
     }
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return mIngredients.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public DummyItem mItem;
+        @BindView(R.id.item_number)
+        TextView mIdView;
+
+        @BindView(R.id.content)
+        TextView mContentView;
 
         public ViewHolder(View view) {
             super(view);
-            mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
-            mContentView = (TextView) view.findViewById(R.id.content);
-        }
-
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            ButterKnife.bind(this, view);
         }
     }
 }

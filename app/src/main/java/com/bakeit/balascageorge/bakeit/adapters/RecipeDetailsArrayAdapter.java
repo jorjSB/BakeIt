@@ -1,13 +1,14 @@
 package com.bakeit.balascageorge.bakeit.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bakeit.balascageorge.bakeit.R;
 import com.bakeit.balascageorge.bakeit.RecipeDetailsActivity;
@@ -30,13 +31,15 @@ public class RecipeDetailsArrayAdapter extends RecyclerView.Adapter<RecyclerView
     private ArrayList<Step> mSteps;
     private Context mContext;
     private  static  final String TAG = RecipeDetailsActivity.class.getSimpleName();
+    int mSelectedPosition;
 
-    public RecipeDetailsArrayAdapter(Context mContext, ArrayList<Ingredient> ingredients, ArrayList<Step> steps, OnItemClick listener) {
+
+    public RecipeDetailsArrayAdapter(Context mContext, ArrayList<Ingredient> ingredients, ArrayList<Step> steps, OnItemClick listener, int selected_position) {
         this.mContext = mContext;
         this.mIngredients = ingredients;
         this.mSteps = steps;
         this.mCallback = listener;
-
+        this.mSelectedPosition = selected_position;
     }
 
     @Override
@@ -52,11 +55,11 @@ public class RecipeDetailsArrayAdapter extends RecyclerView.Adapter<RecyclerView
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (viewType) {
             case VIEW_TYPE_INGREDIENTS: {
-                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ingredients_item, parent, false);
+                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ingredients_step_item, parent, false);
                 return new ViewHolderIngredient(itemView);
             }
             default: {
-                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.step_item, parent, false);
+                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ingredients_step_item, parent, false);
                 return new ViewHolderStep(itemView);
             }
         }
@@ -64,6 +67,9 @@ public class RecipeDetailsArrayAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
+        holder.itemView.setBackgroundColor(mSelectedPosition == position ? Color.GREEN : Color.TRANSPARENT);
+
         switch (holder.getItemViewType()) {
             case VIEW_TYPE_INGREDIENTS:
                 ViewHolderIngredient viewHolderIngredient = (ViewHolderIngredient) holder;
@@ -107,21 +113,34 @@ public class RecipeDetailsArrayAdapter extends RecyclerView.Adapter<RecyclerView
         }
 
         public void bindViews(final int position){
-            ingredientsTV.setText(mIngredients.get(position).getIngredient());
+            ingredientsTV.setText(R.string.ingredients_listitem_label);
             mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    updateSelectedItem(position);
                     mCallback.onClick(mIngredients);
                 }
             });
         }
+
+    }
+
+    private void updateSelectedItem(int position) {
+        // Below line is just like a safety check, because sometimes holder could be null,
+        // in that case, getAdapterPosition() will return RecyclerView.NO_POSITION
+        if (position == RecyclerView.NO_POSITION) return;
+
+        // Updating old as well as new positions
+        notifyItemChanged(mSelectedPosition);
+        mSelectedPosition = position;
+        notifyItemChanged(mSelectedPosition);
     }
 
     /**
      * Step ViewHolder
      */
     public class ViewHolderStep extends RecyclerView.ViewHolder {
-        @BindView(R.id.stepTV)
+        @BindView(R.id.ingredientsTV)
         TextView stepTV;
 
         private View mView;
@@ -134,10 +153,11 @@ public class RecipeDetailsArrayAdapter extends RecyclerView.Adapter<RecyclerView
         }
 
         public void bindViews(final int position){
-            stepTV.setText(mSteps.get(position).getDescription());
+            stepTV.setText(mSteps.get(position).getShortDescription());
             mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    updateSelectedItem(position + 1);
                     mCallback.onClick(mSteps.get(position) );
                 }
             });
@@ -155,4 +175,9 @@ public class RecipeDetailsArrayAdapter extends RecyclerView.Adapter<RecyclerView
     public interface OnItemClick {
         void onClick(Object value);
     }
+
+    public final int returnSelectedPosition(){
+        return mSelectedPosition;
+    }
+
 }

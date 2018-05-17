@@ -2,9 +2,11 @@ package com.bakeit.balascageorge.bakeit;
 
 import android.content.Context;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,11 +29,14 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class RecipeDetailsFragment extends Fragment implements RecipeDetailsArrayAdapter.OnItemClick{
+    private static final String RECIPE_TAG = "recipe";
     private RecyclerView recyclerView;
     private RecipeDetailsArrayAdapter recipeDetailsArrayAdapter;
     private Recipe mRecipe;
 
     private OnFragmentInteractionListener mListener;
+    private String ADAPTER_SELECTED_POSITION_TAG = "adapterSelectedPosition";
+    private Bundle savedState;
 
     public RecipeDetailsFragment() {
         // Required empty public constructor
@@ -41,19 +46,17 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsArra
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
+        if (getArguments() != null)
+            mRecipe = getArguments().getParcelable(RECIPE_TAG);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        int adapterSelectedPosition = 0;
         // Load the saved state (the list of images and list index) if there is one
-        if(savedInstanceState != null) {
-//            mImageIds = savedInstanceState.getIntegerArrayList(IMAGE_ID_LIST);
-//            mListIndex = savedInstanceState.getInt(LIST_INDEX);
-        }
+        if(savedState != null)
+            adapterSelectedPosition = savedState.getInt(ADAPTER_SELECTED_POSITION_TAG);
 
         // Inflate the Android-Me fragment layout
 
@@ -63,9 +66,10 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsArra
         // get the view ref.
         recyclerView = rootView.findViewById(R.id.recycler_view);
 
-        recipeDetailsArrayAdapter = new RecipeDetailsArrayAdapter(getContext(), null, null, this);
-        recyclerView.setAdapter(recipeDetailsArrayAdapter);
-
+        if(mRecipe != null) {
+            recipeDetailsArrayAdapter = new RecipeDetailsArrayAdapter(getContext(), mRecipe.getIngredients(), mRecipe.getSteps(), this, adapterSelectedPosition);
+            recyclerView.setAdapter(recipeDetailsArrayAdapter);
+        }
         return rootView;
     }
 
@@ -87,11 +91,6 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsArra
         mListener = null;
     }
 
-    public void setRecipe(Recipe recipe) {
-        this.mRecipe = recipe;
-         inflateRecipeDetails();
-    }
-
     @Override
     public void onClick(Object value) {
         mListener.onItemSelected(value);
@@ -111,7 +110,13 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsArra
         void onItemSelected(Object object);
     }
 
-    private void inflateRecipeDetails() {
-        recipeDetailsArrayAdapter.update(mRecipe);
+
+    @Override
+    public void onDestroyView(){
+        super.onDestroyView();
+        savedState = new Bundle();
+        if(recipeDetailsArrayAdapter != null)
+            savedState.putInt(ADAPTER_SELECTED_POSITION_TAG, recipeDetailsArrayAdapter.returnSelectedPosition());
     }
+
 }

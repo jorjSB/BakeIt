@@ -15,48 +15,17 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link RecipeStepDetailsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link RecipeStepDetailsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class RecipeStepDetailsFragment extends Fragment {
     @BindView(R.id.step_short_description)
     TextView stepShortDescription;
 
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String STEP_TAG = "step";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private OnFragmentInteractionListener mListener;
     private Step mStep;
 
     public RecipeStepDetailsFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RecipeStepDetailsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static RecipeStepDetailsFragment newInstance(String param1, String param2) {
-        RecipeStepDetailsFragment fragment = new RecipeStepDetailsFragment();
-        Bundle args = new Bundle();
-        args.putString(STEP_TAG, param1);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
