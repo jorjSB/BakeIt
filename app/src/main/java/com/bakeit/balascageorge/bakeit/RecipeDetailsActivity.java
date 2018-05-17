@@ -22,8 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RecipeDetailsActivity extends AppCompatActivity implements
-        RecipeDetailsFragment.OnFragmentInteractionListener,
-        RecipeStepDetailsFragment.OnFragmentInteractionListener{
+        RecipeDetailsFragment.OnFragmentInteractionListener{
 
     @Nullable
     @BindView(R.id.details_fragment_container)
@@ -111,6 +110,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements
                     if (f == null) {
                         Bundle args = new Bundle();
                         args.putParcelable("step", (Step) value);
+                        args.putBoolean("twoPane", mTwoPane);
                         recipeStepDetailsFragment.setArguments(args);
 
                         fragmentManager.beginTransaction()
@@ -150,13 +150,6 @@ public class RecipeDetailsActivity extends AppCompatActivity implements
                             .commit();
                 }
             }
-    }
-
-
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 
     @Override

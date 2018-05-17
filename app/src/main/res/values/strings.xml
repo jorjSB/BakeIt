@@ -9,4 +9,5 @@
     <string name="hello_blank_fragment_step">Step fragment</string>
     <string name="hello_blank_fragment_ingredient">Ingredient fragment</string>
     <string name="ingredients_listitem_label">Ingredients</string>
+    <string name="no_video">No video available</string>
 </resources>

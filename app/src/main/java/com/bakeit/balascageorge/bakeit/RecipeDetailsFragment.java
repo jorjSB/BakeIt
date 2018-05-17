@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -69,6 +70,8 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsArra
         if(mRecipe != null) {
             recipeDetailsArrayAdapter = new RecipeDetailsArrayAdapter(getContext(), mRecipe.getIngredients(), mRecipe.getSteps(), this, adapterSelectedPosition);
             recyclerView.setAdapter(recipeDetailsArrayAdapter);
+            // change title bar
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mRecipe.getName());
         }
         return rootView;
     }

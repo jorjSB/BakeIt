@@ -68,7 +68,7 @@ public class RecipeDetailsArrayAdapter extends RecyclerView.Adapter<RecyclerView
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
-        holder.itemView.setBackgroundColor(mSelectedPosition == position ? Color.GREEN : Color.TRANSPARENT);
+        holder.itemView.setBackgroundColor(mSelectedPosition == position ? mContext.getResources().getColor(R.color.olive) : Color.TRANSPARENT);
 
         switch (holder.getItemViewType()) {
             case VIEW_TYPE_INGREDIENTS:
