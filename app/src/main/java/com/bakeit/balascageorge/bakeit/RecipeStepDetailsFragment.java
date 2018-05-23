@@ -28,6 +28,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,6 +51,9 @@ public class RecipeStepDetailsFragment extends Fragment {
 
     @BindView(R.id.no_video)
     ImageView noVideoImage;
+
+    @BindView(R.id.imageView)
+    ImageView mStepImage;
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String STEP_TAG = "step";
@@ -115,6 +119,8 @@ public class RecipeStepDetailsFragment extends Fragment {
         if(mStep != null && simpleExoPlayerView != null)
             stepShortDescription.setText(mStep.getDescription());
 
+        if(mStep != null && !mStep.getThumbnailURL().isEmpty())
+            Picasso.get().load(mStep.getThumbnailURL()).into(mStepImage);
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mStep.getShortDescription());
 

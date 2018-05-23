@@ -68,7 +68,7 @@ public class RecipesArrayAdapter extends ArrayAdapter<Recipe> {
         // check load the appropiate image(FROM URL OF FROM LOCAL FILE)
         if(mRecipe != null)
             if( URLUtil.isValidUrl( mRecipe.getImageUrl() ))
-                Picasso.with(mContext)
+                Picasso.get()
                         .load( mRecipe.getImageUrl() )
                         .error(R.drawable.default_recipe_image)
                         .into(holder.recipePosterView);
