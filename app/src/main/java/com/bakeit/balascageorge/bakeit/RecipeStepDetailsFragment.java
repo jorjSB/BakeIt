@@ -134,6 +134,9 @@ public class RecipeStepDetailsFragment extends Fragment {
     }
 
     private void initializePlayer() {
+        if(mStep == null)
+            return;
+
         if(mStep.getVideoURL().isEmpty()){
             videoContainer.setVisibility(View.GONE);
             noVideoImage.setVisibility(View.VISIBLE);
