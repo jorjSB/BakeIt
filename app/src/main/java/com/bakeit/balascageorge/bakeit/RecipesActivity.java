@@ -40,7 +40,7 @@ public class RecipesActivity extends AppCompatActivity {
 
         recipesArray = new ArrayList<>();
         adapter = new RecipesArrayAdapter(this,
-                recipesArray);
+                recipesArray, false);
 
         // attach the adapter to the GridView
         gridView.setAdapter(adapter);

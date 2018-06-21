@@ -8,17 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.URLUtil;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bakeit.balascageorge.bakeit.R;
 import com.bakeit.balascageorge.bakeit.RecipeDetailsActivity;
 import com.bakeit.balascageorge.bakeit.models.Recipe;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -26,13 +23,15 @@ import butterknife.ButterKnife;
 
 public class RecipesArrayAdapter extends ArrayAdapter<Recipe> {
 
-    private ArrayList<Recipe> mMovies;
+    private final boolean mWidgetConfig;
+    private ArrayList<Recipe> mRecipes;
     private Context mContext;
     private static final String TAG = RecipesArrayAdapter.class.getSimpleName();
 
-    public RecipesArrayAdapter(Context ctx, ArrayList<Recipe> movies){
-        super(ctx, 0, movies);
-        mMovies = movies;
+    public RecipesArrayAdapter(Context ctx, ArrayList<Recipe> recipes, boolean isWidgetConfig){
+        super(ctx, 0, recipes);
+        mWidgetConfig = isWidgetConfig;
+        mRecipes = recipes;
         mContext = ctx;
     }
 
@@ -62,7 +61,7 @@ public class RecipesArrayAdapter extends ArrayAdapter<Recipe> {
 
 
         // Gets the Recipe object from the ArrayAdapter at the appropriate position
-        final Recipe mRecipe = mMovies.get(position);
+        final Recipe mRecipe = mRecipes.get(position);
 
 
         // check load the appropiate image(FROM URL OF FROM LOCAL FILE)
@@ -75,6 +74,8 @@ public class RecipesArrayAdapter extends ArrayAdapter<Recipe> {
 
         holder.recipeNameTV.setText(mRecipe.getName());
 
+        // only if is not the widget Configuration activity inflating the list
+        if(!mWidgetConfig)
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,8 +90,8 @@ public class RecipesArrayAdapter extends ArrayAdapter<Recipe> {
     }
 
     public void updateAdapter(ArrayList<Recipe> newMovies){
-        this.mMovies.clear();
-        this.mMovies.addAll(newMovies);
+        this.mRecipes.clear();
+        this.mRecipes.addAll(newMovies);
         this.notifyDataSetChanged();
     }
 

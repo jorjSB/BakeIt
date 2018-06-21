@@ -19,15 +19,38 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".RecipeDetailsActivity"
-            android:parentActivityName=".RecipesActivity"
-            android:configChanges="orientation|screenSize">
+            android:configChanges="orientation|screenSize"
+            android:parentActivityName=".RecipesActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".RecipesActivity"/>
+                android:value=".RecipesActivity" />
         </activity>
+
+        <receiver android:name=".RecipeWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/recipe_widget_provider_info" />
+        </receiver>
+
+        <!-- app widget configuration activity in manifest -->
+        <activity android:name=".WidgetConfigurationActivity"
+            android:label="@string/title_activity_widget_configuration"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        <!--  The service that will send our collection data to our widget. It needs the
+                permission android.permission.BIND_REMOTEVIEWS -->
+        <service android:name=".WidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
 
     </application>
 

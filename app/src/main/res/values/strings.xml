@@ -10,4 +10,10 @@
     <string name="hello_blank_fragment_ingredient">Ingredient fragment</string>
     <string name="ingredients_listitem_label">Ingredients</string>
     <string name="no_video">No video available</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="title_activity_widget_configuration">WidgetConfigurationActivity</string>
+    <string name="widget_config_text">Choose recipe to add ingredients widget</string>
+    <string name="no_ingredients">No ingredients available</string>
+    <string name="na">n/a</string>
 </resources>
