@@ -1,16 +1,11 @@
 package com.bakeit.balascageorge.bakeit;
 
-import android.app.Fragment;
-import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.bakeit.balascageorge.bakeit.models.Ingredient;
 import com.bakeit.balascageorge.bakeit.models.Recipe;
@@ -101,7 +96,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements
     public void onItemSelected(Object value) {
         if (value != null)
             // step
-            if (value != null && value instanceof Step) {
+            if (value instanceof Step) {
 
                 // tablet
                 if (mTwoPane) {
@@ -116,8 +111,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements
                         fragmentManager.beginTransaction()
                                 .replace(R.id.details_fragment_container, recipeStepDetailsFragment, RecipeStepDetailsFragment.class.getSimpleName())
                                 .commit();
-                    } else if (f != null)
-                        f.updateView((Step) value);
+                    } else f.updateView((Step) value);
 
                     // phone
                 } else {
@@ -131,7 +125,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements
                             .commit();
                 }
             // ingredients
-            } else if(value != null  && value instanceof ArrayList<?>){
+            } else if(value instanceof ArrayList<?>){
             // tablet
                 if (mTwoPane) {
                     fragmentManager.beginTransaction()

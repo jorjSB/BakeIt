@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +15,7 @@ import com.bakeit.balascageorge.bakeit.adapters.MyIngredientRecyclerViewAdapter;
 import com.bakeit.balascageorge.bakeit.models.Ingredient;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 public class RecipeIngredientsFragment extends Fragment {
@@ -41,7 +41,7 @@ public class RecipeIngredientsFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
             mIngredients = getArguments().getParcelableArrayList(INGREDIENTS_TAG);
-            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.ingredients_listitem_label));
+            ((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar().setTitle(getResources().getString(R.string.ingredients_listitem_label));
         }
     }
 

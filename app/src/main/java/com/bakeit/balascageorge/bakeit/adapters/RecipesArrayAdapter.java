@@ -17,6 +17,7 @@ import com.bakeit.balascageorge.bakeit.models.Recipe;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,7 +73,7 @@ public class RecipesArrayAdapter extends ArrayAdapter<Recipe> {
                         .error(R.drawable.default_recipe_image)
                         .into(holder.recipePosterView);
 
-        holder.recipeNameTV.setText(mRecipe.getName());
+        holder.recipeNameTV.setText(Objects.requireNonNull(mRecipe).getName());
 
         // only if is not the widget Configuration activity inflating the list
         if(!mWidgetConfig)

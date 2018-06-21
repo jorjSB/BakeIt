@@ -1,8 +1,6 @@
 package com.bakeit.balascageorge.bakeit;
 
-import android.appwidget.AppWidgetManager;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.RemoteViewsService;
 
 public class WidgetService extends RemoteViewsService {

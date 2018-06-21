@@ -1,24 +1,18 @@
 package com.bakeit.balascageorge.bakeit;
 
 import android.content.Context;
-import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.bakeit.balascageorge.bakeit.adapters.RecipeDetailsArrayAdapter;
-import com.bakeit.balascageorge.bakeit.models.Ingredient;
 import com.bakeit.balascageorge.bakeit.models.Recipe;
-import com.bakeit.balascageorge.bakeit.models.Step;
 
-import java.util.ArrayList;
+import java.util.Objects;
 
 
 /**
@@ -71,7 +65,7 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsArra
             recipeDetailsArrayAdapter = new RecipeDetailsArrayAdapter(getContext(), mRecipe.getIngredients(), mRecipe.getSteps(), this, adapterSelectedPosition);
             recyclerView.setAdapter(recipeDetailsArrayAdapter);
             // change title bar
-            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mRecipe.getName());
+            Objects.requireNonNull(((AppCompatActivity) getActivity()).getSupportActionBar()).setTitle(mRecipe.getName());
         }
         return rootView;
     }

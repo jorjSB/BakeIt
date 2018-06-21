@@ -1,14 +1,13 @@
 package com.bakeit.balascageorge.bakeit;
 
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory{
@@ -20,7 +19,7 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
 
     public WidgetDataProvider(Context context, Intent intent) {
 
-        appWidgetId = Integer.valueOf(intent.getData().getSchemeSpecificPart());
+        appWidgetId = Integer.valueOf(Objects.requireNonNull(intent.getData()).getSchemeSpecificPart());
         mContext = context;
     }
 

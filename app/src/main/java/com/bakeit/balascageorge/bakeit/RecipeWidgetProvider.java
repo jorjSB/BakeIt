@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 import java.util.ArrayList;
@@ -48,11 +47,7 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
             views.setTextViewText(R.id.no_ingredients, context.getResources().getString(R.string.no_ingredients) );
 
         // Set up the collection
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             setRemoteAdapter(context, views, appWidgetId);
-        } else {
-            setRemoteAdapterV11(context, views, appWidgetId);
-        }
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -87,19 +82,6 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
         Intent intent = new Intent(context, WidgetService.class);
         intent.setData(Uri.fromParts("appWidgetId", String.valueOf(appWidgetId), null));
         views.setRemoteAdapter(R.id.widget_list,
-                intent);
-    }
-
-    /**
-     * Sets the remote adapter used to fill in the list items
-     *
-     * @param views RemoteViews to set the RemoteAdapter
-     */
-    @SuppressWarnings("deprecation")
-    private static void setRemoteAdapterV11(Context context, @NonNull final RemoteViews views, int appWidgetId) {
-        Intent intent = new Intent(context, WidgetService.class);
-        intent.setData(Uri.fromParts("appWidgetId", String.valueOf(appWidgetId), null));
-        views.setRemoteAdapter(0, R.id.widget_list,
                 intent);
     }
 }

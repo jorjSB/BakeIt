@@ -70,7 +70,8 @@
             android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/no_video" />
+            app:layout_constraintTop_toBottomOf="@+id/no_video"
+            android:contentDescription="@string/app_name" />
     </android.support.constraint.ConstraintLayout>
 
 </ScrollView>

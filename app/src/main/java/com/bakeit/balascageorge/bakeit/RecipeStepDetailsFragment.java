@@ -6,10 +6,8 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +27,8 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.squareup.picasso.Picasso;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -117,12 +117,12 @@ public class RecipeStepDetailsFragment extends Fragment {
         mStep = value;
         // portrait
         if(mStep != null && simpleExoPlayerView != null)
-            stepShortDescription.setText(mStep.getDescription());
+            Objects.requireNonNull(stepShortDescription).setText(mStep.getDescription());
 
         if(mStep != null && !mStep.getThumbnailURL().isEmpty())
             Picasso.get().load(mStep.getThumbnailURL()).into(mStepImage);
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mStep.getShortDescription());
+        Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setTitle(mStep.getShortDescription());
 
 
         // handle player
@@ -214,9 +214,9 @@ public class RecipeStepDetailsFragment extends Fragment {
 
 
     private void hideFullscreenVideo() {
-        stepShortDescription.setVisibility(View.VISIBLE);
+        Objects.requireNonNull(stepShortDescription).setVisibility(View.VISIBLE);
 
-        ((ViewGroup) simpleExoPlayerView.getParent()).removeView(simpleExoPlayerView);
+        ((ViewGroup) Objects.requireNonNull(simpleExoPlayerView).getParent()).removeView(simpleExoPlayerView);
         videoContainer.addView(simpleExoPlayerView);
         mExoPlayerFullscreen = false;
         if(mFullScreenDialog != null)
@@ -225,17 +225,17 @@ public class RecipeStepDetailsFragment extends Fragment {
 
 
     private void showFullscreenVideo() {
-        stepShortDescription.setVisibility(View.GONE);
+        Objects.requireNonNull(stepShortDescription).setVisibility(View.GONE);
 
         videoContainer.removeView(simpleExoPlayerView);
-        mFullScreenDialog.addContentView(simpleExoPlayerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        mFullScreenDialog.addContentView(Objects.requireNonNull(simpleExoPlayerView), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         mExoPlayerFullscreen = true;
         mFullScreenDialog.show();
     }
 
     private void initFullscreenDialog() {
 
-        mFullScreenDialog = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen) {
+        mFullScreenDialog = new Dialog(Objects.requireNonNull(getContext()), android.R.style.Theme_Black_NoTitleBar_Fullscreen) {
             public void onBackPressed() {
                 if (mExoPlayerFullscreen)
                     hideFullscreenVideo();
