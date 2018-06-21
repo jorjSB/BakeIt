@@ -1,8 +1,10 @@
 package com.bakeit.balascageorge.bakeit;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -29,6 +31,7 @@ public class RecipesActivity extends AppCompatActivity {
     private ArrayList<Recipe> recipesArray;
     private String TAG = RecipesActivity.class.getSimpleName();
     private int lastListPosition = -1;
+    int recipeIdExtra = -1;
     private String LIST_POSITION_STATE_KEY = "last_position";
     private String RECIPES_ARRAY_STATE_KEY = "recipes_array";
 
@@ -37,6 +40,10 @@ public class RecipesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipes);
         ButterKnife.bind(this);
+
+        if(getIntent().getData() != null && getIntent().getData().getSchemeSpecificPart() != null)
+            recipeIdExtra = Integer.valueOf(getIntent().getData().getSchemeSpecificPart());
+//        recipeIdExtra = getIntent().getIntExtra("recipeId", -1);
 
         recipesArray = new ArrayList<>();
         adapter = new RecipesArrayAdapter(this,
@@ -118,15 +125,26 @@ public class RecipesActivity extends AppCompatActivity {
      * Create adapter and inflate the grid view
      */
     private void updateGridView() {
-        // reset views
-        gridView.setVisibility(View.VISIBLE);
+            // reset views
+            gridView.setVisibility(View.VISIBLE);
 
-        // notify adapter, update data
-        adapter.updateAdapter(recipesArray);
+            // notify adapter, update data
+            adapter.updateAdapter(recipesArray);
 
-//         scroll to position
-        if(lastListPosition != -1)
-            gridView.setSelection(lastListPosition);
+        //         scroll to position
+            if(lastListPosition != -1)
+                gridView.setSelection(lastListPosition);
+
+        if(recipeIdExtra != -1){
+            for (Recipe recipe: recipesArray) {
+                if(recipe.getId() == recipeIdExtra){
+                    Class destinationClass = RecipeDetailsActivity.class;
+                    Intent intentToStartDetailActivity = new Intent(this, destinationClass);
+                    intentToStartDetailActivity.putExtra("recipe", recipe);
+                    this.startActivity(intentToStartDetailActivity);
+                }
+            }
+        }
 
     }
 }

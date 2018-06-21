@@ -26,9 +26,11 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget_provider);
 
+        // set the recipe id on the intent
         Intent intent = new Intent(context, RecipesActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        intent.setData(Uri.fromParts("recipeId", String.valueOf(WidgetConfigurationActivity.loadRecipeIdPref(context, appWidgetId)), null));
 
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
         String recipeName = WidgetConfigurationActivity.loadRecipeNamePref(context, appWidgetId);
         views.setTextViewText(R.id.recipe_name, recipeName);
@@ -41,6 +43,7 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
 
 //            views.setTextViewText(R.id.appwidget_text, ingredientsArray.get(0));
             views.setOnClickPendingIntent(R.id.wrapper, pendingIntent);
+            views.setOnClickPendingIntent(R.id.button, pendingIntent);
         }else
             views.setTextViewText(R.id.no_ingredients, context.getResources().getString(R.string.no_ingredients) );
 

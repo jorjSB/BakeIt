@@ -91,7 +91,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
 
             //TO DO, Perform the configuration and get an instance of the AppWidgetManager//
             // saveIntervalPref(this, appWidgetId, "extra");
-            saveIntervalPref(mContext, appWidgetId, recipesArray.get(position).getIngredients(), recipesArray.get(position).getName());
+            saveIntervalPref(mContext, appWidgetId, recipesArray.get(position).getIngredients(), recipesArray.get(position).getName(), recipesArray.get(position).getId());
 
             // Push widget update to surface with newly set data
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
@@ -114,12 +114,13 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
     }
 
     // Store in shared prefs the name and ingredients for the recipe selected
-    static void saveIntervalPref(Context context, int appWidgetId, ArrayList<Ingredient> ingredients, String name) {
+    static void saveIntervalPref(Context context, int appWidgetId, ArrayList<Ingredient> ingredients, String name, int recipeId) {
         SharedPreferences.Editor prefs = PreferenceManager.getDefaultSharedPreferences(context).edit();
 
         Set<String> ingredientsSet = parseRecipeToIngredientsList(ingredients);
         prefs.putStringSet(String.valueOf(appWidgetId),  ingredientsSet);
         prefs.putString("name_" + String.valueOf(appWidgetId),  name);
+        prefs.putInt("id_" + String.valueOf(appWidgetId),  recipeId);
 
         prefs.commit();
     }
@@ -138,6 +139,14 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
 
         String name = prefs.getString("name_" + String.valueOf(appWidgetId), context.getResources().getString(R.string.na));
         return name;
+    }
+
+    // returns the recipe name based in widget id
+    static int loadRecipeIdPref(Context context, int appWidgetId) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+        int id = prefs.getInt("id_" + String.valueOf(appWidgetId), -1);
+        return id;
     }
 
     private static Set<String> parseRecipeToIngredientsList(ArrayList<Ingredient> ingredients) {

@@ -16,4 +16,5 @@
     <string name="widget_config_text">Choose recipe to add ingredients widget</string>
     <string name="no_ingredients">No ingredients available</string>
     <string name="na">n/a</string>
+    <string name="click_for_recipe">Click for recipe</string>
 </resources>

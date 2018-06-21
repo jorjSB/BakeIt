@@ -36,6 +36,11 @@
                 android:paddingEnd="@dimen/widget_header_padding"
                 android:paddingRight="@dimen/widget_header_padding"/>
         </LinearLayout>
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/click_for_recipe" />
         <TextView
             android:id="@+id/no_ingredients"
             android:layout_width="wrap_content"
@@ -43,16 +48,17 @@
             android:layout_gravity="center_vertical"
             android:textColor="@android:color/black"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:paddingStart="@dimen/widget_header_padding"
             android:paddingLeft="@dimen/widget_header_padding"
             android:paddingEnd="@dimen/widget_header_padding"
-            android:paddingRight="@dimen/widget_header_padding"/>
+            />
 
         <ListView
             android:id="@+id/widget_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </ListView>
+
+
     </LinearLayout>
 
 </FrameLayout>

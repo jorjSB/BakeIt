@@ -3,7 +3,7 @@
     android:configure="com.bakeit.balascageorge.bakeit.WidgetConfigurationActivity"
     android:initialKeyguardLayout="@layout/recipe_widget_provider"
     android:initialLayout="@layout/recipe_widget_provider"
-    android:minHeight="140dp"
+    android:minHeight="200dp"
     android:minWidth="75dp"
     android:previewImage="@drawable/default_recipe_image"
     android:resizeMode="horizontal|vertical"
