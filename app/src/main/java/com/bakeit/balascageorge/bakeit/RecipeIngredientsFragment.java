@@ -38,6 +38,9 @@ public class RecipeIngredientsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Retain this fragment across configuration changes.
+        setRetainInstance(true);
+
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
             mIngredients = getArguments().getParcelableArrayList(INGREDIENTS_TAG);

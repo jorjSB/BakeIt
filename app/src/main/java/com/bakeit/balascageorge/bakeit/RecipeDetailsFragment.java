@@ -41,6 +41,10 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsArra
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Retain this fragment across configuration changes.
+        setRetainInstance(true);
+
         if (getArguments() != null)
             mRecipe = getArguments().getParcelable(RECIPE_TAG);
     }

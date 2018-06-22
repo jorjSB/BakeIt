@@ -80,6 +80,9 @@ public class RecipeStepDetailsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Retain this fragment across configuration changes.
+//        setRetainInstance(true);
+
         if (getArguments() != null) {
             mStep = getArguments().getParcelable(STEP_TAG);
             mTwoPane = getArguments().getBoolean(TWO_PANE_TAG);
@@ -115,6 +118,7 @@ public class RecipeStepDetailsFragment extends Fragment {
 
     public void updateView(Step value) {
         mStep = value;
+
         // portrait
         if(mStep != null && simpleExoPlayerView != null)
             Objects.requireNonNull(stepShortDescription).setText(mStep.getDescription());

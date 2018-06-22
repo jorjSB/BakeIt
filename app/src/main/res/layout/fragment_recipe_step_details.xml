@@ -4,16 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:fillViewport="true"
     android:orientation="vertical">
 
-    <android.support.constraint.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".RecipeStepDetailsFragment">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/step_short_description"
@@ -35,15 +33,14 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/step_short_description">
+            >
 
             <com.google.android.exoplayer2.ui.SimpleExoPlayerView
                 android:id="@+id/player_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:focusable="true" />
+                android:focusable="true"
+                android:minHeight="300dp"/>
         </FrameLayout>
 
         <ImageView
@@ -54,10 +51,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
             android:background="@drawable/no_video"
-            android:contentDescription="@string/no_video"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/step_short_description" />
+            android:contentDescription="@string/no_video" />
 
         <ImageView
             android:id="@+id/imageView"
@@ -68,10 +62,7 @@
             android:layout_marginTop="24dp"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/no_video"
             android:contentDescription="@string/app_name" />
-    </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
 
 </ScrollView>

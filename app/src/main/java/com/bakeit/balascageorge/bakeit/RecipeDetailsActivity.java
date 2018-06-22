@@ -1,9 +1,11 @@
 package com.bakeit.balascageorge.bakeit;
 
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
@@ -24,12 +26,17 @@ public class RecipeDetailsActivity extends AppCompatActivity implements
     FrameLayout mFragmentContainer;
 
     private Recipe mRecipe;
-    private String TAG = RecipeDetailsActivity.class.getSimpleName();
-    private RecipeDetailsFragment recipeDetailsFragment;
     private boolean mTwoPane;
     private FragmentManager fragmentManager;
+
+    private RecipeDetailsFragment recipeDetailsFragment;
     private RecipeIngredientsFragment recipeIngredientsFragment;
     private RecipeStepDetailsFragment recipeStepDetailsFragment;
+
+    private static final String TAG_DETAILS_FRAGMENT = "details_fragment";
+    private static final String TAG_INGREDIENTS_FRAGMENT = "ingredients_fragment";
+    private static final String TAG_STEP_DETAILS_FRAGMENT = "step_details_fragment";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +51,9 @@ public class RecipeDetailsActivity extends AppCompatActivity implements
 
         fragmentManager = getSupportFragmentManager();
         // Initially display the ingredients list(nothing clicked)
-        recipeDetailsFragment = new RecipeDetailsFragment();
-        recipeIngredientsFragment = new RecipeIngredientsFragment();
-        recipeStepDetailsFragment = new RecipeStepDetailsFragment();
+        recipeDetailsFragment = (RecipeDetailsFragment) fragmentManager.findFragmentByTag(TAG_DETAILS_FRAGMENT);
+        recipeIngredientsFragment = (RecipeIngredientsFragment) fragmentManager.findFragmentByTag(TAG_INGREDIENTS_FRAGMENT);
+        recipeStepDetailsFragment = (RecipeStepDetailsFragment) fragmentManager.findFragmentByTag(TAG_STEP_DETAILS_FRAGMENT);
 
         // init the list with details
         if(mRecipe == null) {
@@ -60,11 +67,15 @@ public class RecipeDetailsActivity extends AppCompatActivity implements
         if(mTwoPane) {
             Bundle args = new Bundle();
             args.putParcelableArrayList("ingredients", (ArrayList<Ingredient>) mRecipe.getIngredients());
-            recipeIngredientsFragment.setArguments(args);
 
-            fragmentManager.beginTransaction()
-                    .add(R.id.details_fragment_container, recipeIngredientsFragment, RecipeIngredientsFragment.class.getSimpleName())
-                    .commit();
+            if(recipeIngredientsFragment == null){
+                recipeIngredientsFragment = new RecipeIngredientsFragment();
+                recipeIngredientsFragment.setArguments(args);
+                fragmentManager.beginTransaction()
+                        .add(R.id.details_fragment_container, recipeIngredientsFragment, TAG_INGREDIENTS_FRAGMENT)
+                        .addToBackStack(null)
+                        .commit();
+            }
         }
 
     }
@@ -75,11 +86,15 @@ public class RecipeDetailsActivity extends AppCompatActivity implements
     private void setFragmentRecipeDetails() {
         Bundle args = new Bundle();
         args.putParcelable("recipe", mRecipe);
-        recipeDetailsFragment.setArguments(args);
 
-        fragmentManager.beginTransaction()
-                .add(R.id.recipe_details_fragment_id, recipeDetailsFragment, RecipeDetailsFragment.class.getSimpleName())
-                .commit();
+        if(recipeDetailsFragment == null){
+            recipeDetailsFragment = new RecipeDetailsFragment();
+            recipeDetailsFragment.setArguments(args);
+            fragmentManager.beginTransaction()
+                    .add(R.id.recipe_details_fragment_id, recipeDetailsFragment, TAG_DETAILS_FRAGMENT)
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 
     @Override
@@ -100,59 +115,65 @@ public class RecipeDetailsActivity extends AppCompatActivity implements
 
                 // tablet
                 if (mTwoPane) {
-                    RecipeStepDetailsFragment f = (RecipeStepDetailsFragment) fragmentManager.findFragmentByTag(RecipeStepDetailsFragment.class.getSimpleName());
+                    if (recipeStepDetailsFragment == null)
+                        recipeStepDetailsFragment = new RecipeStepDetailsFragment();
 
-                    if (f == null) {
-                        Bundle args = new Bundle();
-                        args.putParcelable("step", (Step) value);
-                        args.putBoolean("twoPane", mTwoPane);
-                        recipeStepDetailsFragment.setArguments(args);
+                    Bundle args = new Bundle();
+                    args.putParcelable("step", (Step) value);
+                    args.putBoolean("twoPane", mTwoPane);
+                    recipeStepDetailsFragment.setArguments(args);
 
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.details_fragment_container, recipeStepDetailsFragment, RecipeStepDetailsFragment.class.getSimpleName())
-                                .commit();
-                    } else f.updateView((Step) value);
+                    replaceFragment(R.id.details_fragment_container, recipeStepDetailsFragment, TAG_STEP_DETAILS_FRAGMENT);
+
+                     if(recipeStepDetailsFragment.isResumed())
+                        recipeStepDetailsFragment.updateView((Step) value);
 
                     // phone
                 } else {
                     Bundle args = new Bundle();
                     args.putParcelable("step", (Step) value);
+
+                    if(recipeStepDetailsFragment == null)
+                        recipeStepDetailsFragment = new RecipeStepDetailsFragment();
+
                     recipeStepDetailsFragment.setArguments(args);
 
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.recipe_details_fragment_id, recipeStepDetailsFragment, RecipeStepDetailsFragment.class.getSimpleName())
-                            .addToBackStack(null)
-                            .commit();
+                    replaceFragment(R.id.recipe_details_fragment_id, recipeStepDetailsFragment, TAG_STEP_DETAILS_FRAGMENT);
                 }
             // ingredients
             } else if(value instanceof ArrayList<?>){
-            // tablet
+                // tablet
                 if (mTwoPane) {
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.details_fragment_container, recipeIngredientsFragment, RecipeIngredientsFragment.class.getSimpleName())
-                            .commit();
+
+                    fragmentManager.popBackStack(TAG_STEP_DETAILS_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+                    if(recipeIngredientsFragment == null)
+                        recipeIngredientsFragment = new RecipeIngredientsFragment();
+
+                    replaceFragment(R.id.details_fragment_container, recipeIngredientsFragment, TAG_INGREDIENTS_FRAGMENT);
+
                 }
                 // phone
                 else {
                     Bundle args = new Bundle();
                     args.putParcelableArrayList("ingredients", (ArrayList<Ingredient>) value);
+
+                    if(recipeIngredientsFragment == null)
+                        recipeIngredientsFragment = new RecipeIngredientsFragment();
+
                     recipeIngredientsFragment.setArguments(args);
 
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.recipe_details_fragment_id, recipeIngredientsFragment, RecipeIngredientsFragment.class.getSimpleName())
-                            .addToBackStack(null)
-                            .commit();
+                    replaceFragment(R.id.recipe_details_fragment_id, recipeIngredientsFragment, TAG_INGREDIENTS_FRAGMENT);
                 }
             }
     }
 
     @Override
     public void onBackPressed(){
-        if (fragmentManager.getBackStackEntryCount() > 0) {
-            fragmentManager.popBackStack();
-        } else {
-            super.onBackPressed();
-        }
+        if(mTwoPane || fragmentManager.getBackStackEntryCount() == 1)
+            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+        super.onBackPressed();
     }
 
     @Override
@@ -169,7 +190,19 @@ public class RecipeDetailsActivity extends AppCompatActivity implements
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        onCreate(savedInstanceState);
+//        onCreate(savedInstanceState);
+    }
+
+
+    private void replaceFragment (int placeholderID , Fragment fragment, String tag){
+        boolean fragmentPopped = fragmentManager.popBackStackImmediate (tag, 0);
+
+        if (!fragmentPopped){ //fragment not in back stack, create it.
+            fragmentManager.beginTransaction()
+                .replace(placeholderID, fragment)
+                .addToBackStack(tag)
+                .commit();
+        }
     }
 
 }
