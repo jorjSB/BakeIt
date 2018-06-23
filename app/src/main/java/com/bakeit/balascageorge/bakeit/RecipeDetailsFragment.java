@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bakeit.balascageorge.bakeit.adapters.RecipeDetailsArrayAdapter;
+import com.bakeit.balascageorge.bakeit.adapters.RecipeDetailsAdapter;
 import com.bakeit.balascageorge.bakeit.models.Recipe;
 
 import java.util.Objects;
@@ -23,10 +23,10 @@ import java.util.Objects;
  * Use the {@link RecipeDetailsFragment#} factory method to
  * create an instance of this fragment.
  */
-public class RecipeDetailsFragment extends Fragment implements RecipeDetailsArrayAdapter.OnItemClick{
+public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdapter.OnItemClick{
     private static final String RECIPE_TAG = "recipe";
     private RecyclerView recyclerView;
-    private RecipeDetailsArrayAdapter recipeDetailsArrayAdapter;
+    private RecipeDetailsAdapter recipeDetailsAdapter;
     private Recipe mRecipe;
 
     private OnFragmentInteractionListener mListener;
@@ -66,8 +66,8 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsArra
         recyclerView = rootView.findViewById(R.id.recycler_view);
 
         if(mRecipe != null) {
-            recipeDetailsArrayAdapter = new RecipeDetailsArrayAdapter(getContext(), mRecipe.getIngredients(), mRecipe.getSteps(), this, adapterSelectedPosition);
-            recyclerView.setAdapter(recipeDetailsArrayAdapter);
+            recipeDetailsAdapter = new RecipeDetailsAdapter(getContext(), mRecipe.getIngredients(), mRecipe.getSteps(), this, adapterSelectedPosition);
+            recyclerView.setAdapter(recipeDetailsAdapter);
             // change title bar
             Objects.requireNonNull(((AppCompatActivity) getActivity()).getSupportActionBar()).setTitle(mRecipe.getName());
         }
@@ -116,8 +116,8 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsArra
     public void onDestroyView(){
         super.onDestroyView();
         savedState = new Bundle();
-        if(recipeDetailsArrayAdapter != null)
-            savedState.putInt(ADAPTER_SELECTED_POSITION_TAG, recipeDetailsArrayAdapter.returnSelectedPosition());
+        if(recipeDetailsAdapter != null)
+            savedState.putInt(ADAPTER_SELECTED_POSITION_TAG, recipeDetailsAdapter.returnSelectedPosition());
     }
 
 }

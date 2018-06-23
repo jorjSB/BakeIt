@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView;
 
-import com.bakeit.balascageorge.bakeit.adapters.RecipesArrayAdapter;
+import com.bakeit.balascageorge.bakeit.adapters.RecipesAdapter;
 import com.bakeit.balascageorge.bakeit.models.Recipe;
 import com.bakeit.balascageorge.bakeit.utils.JsonUtils;
 import com.bakeit.balascageorge.bakeit.utils.NetUtils;
@@ -26,7 +26,7 @@ public class RecipesActivity extends AppCompatActivity {
     @BindView(R.id.recipes_grid)
     GridView gridView;
 
-    private RecipesArrayAdapter adapter;
+    private RecipesAdapter adapter;
     private ArrayList<Recipe> recipesArray;
     private String TAG = RecipesActivity.class.getSimpleName();
     private int lastListPosition = -1;
@@ -45,7 +45,7 @@ public class RecipesActivity extends AppCompatActivity {
 //        recipeIdExtra = getIntent().getIntExtra("recipeId", -1);
 
         recipesArray = new ArrayList<>();
-        adapter = new RecipesArrayAdapter(this,
+        adapter = new RecipesAdapter(this,
                 recipesArray, false);
 
         // attach the adapter to the GridView

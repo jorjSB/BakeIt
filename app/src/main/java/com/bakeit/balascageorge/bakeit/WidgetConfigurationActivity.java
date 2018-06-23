@@ -14,7 +14,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bakeit.balascageorge.bakeit.adapters.RecipesArrayAdapter;
+import com.bakeit.balascageorge.bakeit.adapters.RecipesAdapter;
 import com.bakeit.balascageorge.bakeit.models.Ingredient;
 import com.bakeit.balascageorge.bakeit.models.Recipe;
 import com.bakeit.balascageorge.bakeit.utils.JsonUtils;
@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
 public class WidgetConfigurationActivity extends AppCompatActivity {
 
     private ArrayList<Recipe> recipesArray;
-    private RecipesArrayAdapter adapter;
+    private RecipesAdapter adapter;
     private Context mContext;
 
     @BindView(R.id.recipes_grid)
@@ -49,7 +49,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
         mContext = this;
 
         recipesArray = new ArrayList<>();
-        adapter = new RecipesArrayAdapter(mContext,
+        adapter = new RecipesAdapter(mContext,
                 recipesArray, true);
 
         // attach the adapter to the GridView

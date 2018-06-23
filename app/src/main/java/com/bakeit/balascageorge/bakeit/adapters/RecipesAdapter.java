@@ -22,14 +22,14 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RecipesArrayAdapter extends ArrayAdapter<Recipe> {
+public class RecipesAdapter extends ArrayAdapter<Recipe> {
 
     private final boolean mWidgetConfig;
     private ArrayList<Recipe> mRecipes;
     private Context mContext;
-    private static final String TAG = RecipesArrayAdapter.class.getSimpleName();
+    private static final String TAG = RecipesAdapter.class.getSimpleName();
 
-    public RecipesArrayAdapter(Context ctx, ArrayList<Recipe> recipes, boolean isWidgetConfig){
+    public RecipesAdapter(Context ctx, ArrayList<Recipe> recipes, boolean isWidgetConfig){
         super(ctx, 0, recipes);
         mWidgetConfig = isWidgetConfig;
         mRecipes = recipes;

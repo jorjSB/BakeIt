@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RecipeDetailsArrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private final int VIEW_TYPE_INGREDIENTS = 0;
     private final int VIEW_TYPE_STEP = 1;
@@ -33,7 +33,7 @@ public class RecipeDetailsArrayAdapter extends RecyclerView.Adapter<RecyclerView
     int mSelectedPosition;
 
 
-    public RecipeDetailsArrayAdapter(Context mContext, ArrayList<Ingredient> ingredients, ArrayList<Step> steps, OnItemClick listener, int selected_position) {
+    public RecipeDetailsAdapter(Context mContext, ArrayList<Ingredient> ingredients, ArrayList<Step> steps, OnItemClick listener, int selected_position) {
         this.mContext = mContext;
         this.mIngredients = ingredients;
         this.mSteps = steps;
