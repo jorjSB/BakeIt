@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bakeit.balascageorge.bakeit.models.Step;
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -60,10 +62,6 @@ public class RecipeStepDetailsFragment extends Fragment {
     private Step mStep;
     private static final String TWO_PANE_TAG = "twoPane";
     private Boolean mTwoPane;
-
-//    private SimpleExoPlayer player;
-//    private boolean shouldAutoPlay = true;
-
     private Unbinder unbinder;
     private SimpleExoPlayer player;
     private long playbackPosition = 0;
@@ -71,6 +69,9 @@ public class RecipeStepDetailsFragment extends Fragment {
     private boolean playWhenReady = true;
     private boolean mExoPlayerFullscreen = false;
     private Dialog mFullScreenDialog;
+    private String KEY_AUTO_PLAY = "video_state";
+    private String KEY_WINDOW = "video_window";
+    private String KEY_POSITION = "video_position";
 
     public RecipeStepDetailsFragment() {
         // Required empty public constructor
@@ -86,6 +87,12 @@ public class RecipeStepDetailsFragment extends Fragment {
         if (getArguments() != null) {
             mStep = getArguments().getParcelable(STEP_TAG);
             mTwoPane = getArguments().getBoolean(TWO_PANE_TAG);
+        }
+
+        if (savedInstanceState != null) {
+            playWhenReady = savedInstanceState.getBoolean(KEY_AUTO_PLAY);
+            currentWindow = savedInstanceState.getInt(KEY_WINDOW);
+            playbackPosition = savedInstanceState.getLong(KEY_POSITION);
         }
 
         initFullscreenDialog();
@@ -138,6 +145,8 @@ public class RecipeStepDetailsFragment extends Fragment {
     }
 
     private void initializePlayer() {
+        Log.d("exoplayer", "initPlayer");
+
         if(mStep == null)
             return;
 
@@ -163,7 +172,12 @@ public class RecipeStepDetailsFragment extends Fragment {
 
         Uri uri = Uri.parse(mStep.getVideoURL());
         MediaSource mediaSource = buildMediaSource(uri);
-        player.prepare(mediaSource, true, false);
+
+        boolean haveStartPosition = currentWindow != C.INDEX_UNSET;
+        if (haveStartPosition) {
+            player.seekTo(currentWindow, playbackPosition);
+        }
+        player.prepare(mediaSource, !haveStartPosition, false);
 
         if(!mTwoPane)
             if(getResources().getConfiguration().orientation == ORIENTATION_LANDSCAPE )
@@ -249,10 +263,9 @@ public class RecipeStepDetailsFragment extends Fragment {
     }
 
     private void releasePlayer() {
+        Log.d("exoplayer", "releasePlayer");
         if (player != null) {
-//            playbackPosition = player.getCurrentPosition();
-//            currentWindow = player.getCurrentWindowIndex();
-//            playWhenReady = player.getPlayWhenReady();
+            updateStartPosition();
             player.release();
             player = null;
         }
@@ -273,4 +286,24 @@ public class RecipeStepDetailsFragment extends Fragment {
             showFullscreenVideo();
         }
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        updateStartPosition();
+        outState.putBoolean(KEY_AUTO_PLAY, playWhenReady);
+        outState.putInt(KEY_WINDOW, currentWindow);
+        outState.putLong(KEY_POSITION, playbackPosition);
+
+    }
+
+    private void updateStartPosition() {
+        if (player != null) {
+            playWhenReady = player.getPlayWhenReady();
+            currentWindow = player.getCurrentWindowIndex();
+            playbackPosition = Math.max(0, player.getContentPosition());
+        }
+    }
+
 }
